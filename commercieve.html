@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercive | All-In-One Ecommerce Fulfillment & AI Infrastructure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f4ff',
+                            100: '#e3ebff',
+                            200: '#cbd8ff',
+                            300: '#a8beff',
+                            400: '#809aff',
+                            500: '#5c71ff',
+                            600: '#3d44ff',
+                            700: '#312bf2',
+                            800: '#2823c9',
+                            900: '#2320a0',
+                            950: '#15125e',
+                        },
+                        surface: '#ffffff',
+                        surfaceAlt: '#f8fafc',
+                        darkText: '#0f172a',
+                        mutedText: '#64748b',
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'glass-hover': '0 12px 40px 0 rgba(31, 38, 135, 0.12)',
+                        'float': '0 20px 40px -10px rgba(0,0,0,0.08)',
+                        'soft': '0 4px 20px -2px rgba(0,0,0,0.05)',
+                        'glow': '0 0 20px rgba(92, 113, 255, 0.4)',
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-in': 'slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'dash-line': 'dashLine 20s linear infinite',
+                        'spin-slow': 'spin 15s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeUp: {
+                            '0%': { opacity: 0, transform: 'translateY(40px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            '0%': { opacity: 0, transform: 'translateX(-40px)' },
+                            '100%': { opacity: 1, transform: 'translateX(0)' },
+                        },
+                        dashLine: {
+                            'to': { strokeDashoffset: '-1000' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #ffffff; color: #0f172a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        
+        /* Modern Clean Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd8ff; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #809aff; }
+
+        /* Glassmorphism Utilities */
+        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05); }
+        .glass-card-dark { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* Scroll Reveal Intersections */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: opacity, transform; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* Animated Hamburger Menu */
+        .ham-btn { width: 44px; height: 44px; position: relative; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; z-index: 100; background: #f8fafc; border-radius: 50%; transition: all 0.3s ease; border: 1px solid #e2e8f0; }
+        .ham-btn:hover { background: #e3ebff; border-color: #cbd8ff; }
+        .ham-line { width: 20px; height: 2px; background-color: #0f172a; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-radius: 2px; }
+        .ham-open .line-1 { transform: translateY(7px) rotate(45deg); width: 22px; }
+        .ham-open .line-2 { opacity: 0; transform: scaleX(0); }
+        .ham-open .line-3 { transform: translateY(-7px) rotate(-45deg); width: 22px; }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu { opacity: 0; pointer-events: none; transition: all 0.4s ease-in-out; backdrop-filter: blur(0px); }
+        #mobile-menu.open { opacity: 1; pointer-events: auto; backdrop-filter: blur(24px); }
+        .menu-item-mobile { transform: translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        #mobile-menu.open .menu-item-mobile { transform: translateY(0); opacity: 1; }
+
+        /* Fancy Hover Gradients & Accents */
+        .hover-gradient-text { background-clip: text; -webkit-background-clip: text; transition: all 0.3s ease; }
+        .group:hover .hover-gradient-text { color: transparent; background-image: linear-gradient(to right, #3d44ff, #809aff); }
+        
+        .bento-hover { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .bento-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(61, 68, 255, 0.15); border-color: #cbd8ff; }
+
+        /* Accordion CSS */
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease; opacity: 0; }
+        .faq-item.active .faq-answer { max-height: 600px; opacity: 1; }
+        .faq-icon { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .faq-item.active .faq-icon { transform: rotate(45deg); color: #3d44ff; }
+    </style>
+</head>
+<body class="selection:bg-brand-200 selection:text-brand-900 relative">
+
+    <div class="absolute top-0 left-0 w-full h-[120vh] overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-brand-200/40 rounded-full mix-blend-multiply filter blur-[120px] animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-blue-200/40 rounded-full mix-blend-multiply filter blur-[120px] animate-blob" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[70%] h-[70%] bg-indigo-100/40 rounded-full mix-blend-multiply filter blur-[120px] animate-blob" style="animation-delay: 4s;"></div>
+    </div>
+
+    <nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-400 py-4">
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center bg-white/50 backdrop-blur-xl border border-white/80 rounded-2xl px-6 py-3.5 shadow-soft transition-all duration-300" id="nav-container">
+                
+                <a href="#" class="flex items-center gap-3.5 group z-50">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-700 to-brand-500 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 transform group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    </div>
+                    <span class="font-extrabold text-2xl tracking-tight text-darkText">Commercive</span>
+                </a>
+
+                <div class="hidden lg:flex items-center space-x-2 bg-white/40 px-2 py-1 rounded-xl border border-gray-100">
+                    <a href="#fulfillment" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-mutedText hover:text-darkText hover:bg-white transition-all shadow-sm shadow-transparent hover:shadow-soft">Fulfillment & 3PL</a>
+                    <a href="#ai-store" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-mutedText hover:text-darkText hover:bg-white transition-all shadow-sm shadow-transparent hover:shadow-soft">AI Store Builder</a>
+
+                    <a href="#products" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-mutedText hover:text-darkText hover:bg-white transition-all shadow-sm shadow-transparent hover:shadow-soft">Pricing</a>
+                    <a href="#affiliate" class="px-5 py-2.5 rounded-lg text-sm font-bold text-brand-600 hover:bg-brand-50 transition-all flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Earn 30%</a>
+                </div>
+
+                <div class="hidden md:flex items-center">
+                    <a href="https://whop.com/commercive/commercive-membership-3?a=digitalartlab" class="relative inline-flex items-center justify-center px-7 py-3 overflow-hidden font-bold text-white bg-darkText rounded-xl shadow-float group">
+                        <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-brand-600 rounded-full group-hover:w-60 group-hover:h-56"></span>
+                        <span class="relative text-sm flex items-center gap-2">Join Network <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span>
+                    </a>
+                </div>
+
+                <div class="lg:hidden ham-btn shadow-sm" id="ham-btn">
+                    <span class="ham-line line-1"></span>
+                    <span class="ham-line line-2"></span>
+                    <span class="ham-line line-3"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-white/85 z-40 flex flex-col pt-36 px-6 pb-12 overflow-y-auto">
+        <div class="flex flex-col space-y-4 mb-12">
+            <div class="menu-item-mobile" style="transition-delay: 0.1s;">
+                <a href="#fulfillment" class="mobile-link block text-4xl font-extrabold text-darkText py-4 border-b border-gray-200 hover:text-brand-600 transition-colors">China & US 3PL</a>
+            </div>
+            <div class="menu-item-mobile" style="transition-delay: 0.15s;">
+                <a href="#ai-store" class="mobile-link block text-4xl font-extrabold text-darkText py-4 border-b border-gray-200 hover:text-brand-600 transition-colors">AI Store Builder</a>
+            </div>
+
+            <div class="menu-item-mobile" style="transition-delay: 0.25s;">
+                <a href="#products" class="mobile-link block text-4xl font-extrabold text-darkText py-4 border-b border-gray-200 hover:text-brand-600 transition-colors">Access & Pricing</a>
+            </div>
+            <div class="menu-item-mobile" style="transition-delay: 0.3s;">
+                <a href="#affiliate" class="mobile-link block text-4xl font-extrabold text-brand-600 py-4 border-b border-brand-100 flex items-center gap-3"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Partner Program</a>
+            </div>
+        </div>
+        
+        <div class="menu-item-mobile mt-auto" style="transition-delay: 0.4s;">
+            <div class="bg-surfaceAlt p-8 rounded-3xl border border-gray-200 shadow-soft">
+                <p class="text-sm font-medium text-mutedText mb-5">Initialize your all-in-one fulfillment and growth infrastructure today.</p>
+                <a href="https://whop.com/commercive/commercive-membership-3?a=digitalartlab" class="flex justify-center items-center w-full py-5 bg-darkText hover:bg-brand-600 text-white font-bold text-lg rounded-xl shadow-lg transition-colors">
+                    Join Commercive ($29.99)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <section class="relative pt-48 pb-20 lg:pt-56 lg:pb-32 overflow-hidden min-h-[95vh] flex items-center">
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid lg:grid-cols-12 gap-16 lg:gap-10 items-center">
+                
+                <div class="lg:col-span-6 animate-slide-in text-center lg:text-left relative z-20">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-brand-200 shadow-sm mb-8">
+                        <span class="flex h-2.5 w-2.5 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        <span class="text-xs font-bold text-darkText uppercase tracking-widest">Shopify App & Fulfillment Live</span>
+                    </div>
+                    
+                    <h1 class="text-5xl sm:text-6xl lg:text-[5rem] font-extrabold text-darkText leading-[1.05] mb-8 tracking-tighter">
+                        Your All-In-One <br>
+                        Ecommerce <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-indigo-400">Partner.</span>
+                    </h1>
+                    
+                    <p class="text-lg sm:text-xl text-mutedText mb-12 max-w-2xl mx-auto lg:mx-0 font-body leading-relaxed">
+                        Whether it's <strong class="text-darkText">Dropshipping, China 3PL, US 3PL, Amazon, or TikTok Shop fulfillment</strong>, Commercive helps you scale with fast, reliable, and cost-effective shipping & AI logistics solutions.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 mb-14">
+                        <a href="https://whop.com/commercive/commercive-membership-3?a=digitalartlab" class="w-full sm:w-auto px-10 py-5 bg-brand-600 text-white font-bold rounded-2xl shadow-float hover:bg-brand-700 hover:shadow-brand-500/30 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center text-lg">
+                            Get Access ($29.99)
+                        </a>
+                        <a href="#ai-store" class="w-full sm:w-auto px-10 py-5 bg-white text-darkText font-bold rounded-2xl shadow-soft border border-gray-200 hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3 text-lg">
+                            <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            View AI Tools
+                        </a>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 pt-8 border-t border-gray-200/80">
+                        <div class="flex items-center gap-3">
+                            <div class="flex -space-x-1 text-yellow-400">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            </div>
+                            <span class="text-sm font-bold text-darkText">4.8/5 on Trustpilot</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img src="https://cdn.shopify.com/assets/images/logos/shopify-bag.png" alt="Shopify" class="w-5 h-5 object-contain filter grayscale opacity-70">
+                            <span class="text-sm font-medium text-mutedText">Official Shopify App</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 relative hidden lg:block animate-fade-up" style="animation-delay: 0.2s;">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-200 via-indigo-100 to-white rounded-[3rem] transform rotate-3 scale-105 opacity-80 shadow-inner"></div>
+                    
+                    <div class="relative bg-white/95 backdrop-blur-2xl border border-white rounded-[2.5rem] shadow-glass p-7 z-10 transform -rotate-1 hover:rotate-0 transition-transform duration-700 h-[600px] flex flex-col">
+                        
+                        <div class="flex justify-between items-center mb-8 border-b border-gray-100 pb-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-brand-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-extrabold text-darkText text-lg">Commercive Hub</h3>
+                                    <p class="text-xs text-mutedText font-medium flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Synced with Shopify</p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 border border-gray-200 text-darkText text-xs font-bold px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+                                Last 30 Days ▾
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-surfaceAlt border border-gray-100 p-4 rounded-2xl">
+                                <p class="text-xs text-mutedText font-semibold mb-2 uppercase tracking-widest">Global Orders</p>
+                                <h2 class="text-3xl font-extrabold text-darkText mb-1">1,482</h2>
+                                <p class="text-xs font-bold text-green-500">98% On-Time Delivery</p>
+                            </div>
+                            <div class="bg-surfaceAlt border border-gray-100 p-4 rounded-2xl">
+                                <p class="text-xs text-mutedText font-semibold mb-2 uppercase tracking-widest">Inventory Forecast</p>
+                                <h2 class="text-3xl font-extrabold text-darkText mb-1">14 Days</h2>
+                                <p class="text-xs font-bold text-brand-600">Restock Recommended</p>
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-sm text-darkText mb-4 px-1">Active Sourcing & Fulfillments</h4>
+                        <div class="space-y-3 flex-grow overflow-hidden">
+                            <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-brand-200 transition-colors cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center shrink-0">📦</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-darkText leading-tight">US 3PL Distribution</p>
+                                        <p class="text-[10px] text-mutedText">TikTok Shop Integration</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 bg-green-50 text-green-600 text-[10px] font-bold rounded uppercase tracking-wider">Processing</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-brand-200 transition-colors cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">🚢</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-darkText leading-tight">China Dropshipping</p>
+                                        <p class="text-[10px] text-mutedText">65+ Countries Active</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 bg-blue-50 text-blue-600 text-[10px] font-bold rounded uppercase tracking-wider">In Transit</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-brand-200 transition-colors cursor-pointer opacity-70">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center shrink-0">🤖</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-darkText leading-tight">Storebuild.ai Synced</p>
+                                        <p class="text-[10px] text-mutedText">Product Pages Optimized</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 bg-gray-100 text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute -left-10 bottom-24 bg-darkText p-4 rounded-2xl shadow-float z-20 animate-fade-up border border-gray-700" style="animation-delay: 0.5s;">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-brand-600/30 flex items-center justify-center border border-brand-500">
+                                <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            </div>
+                            <div class="pr-2">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-0.5">Commercive AI</p>
+                                <p class="text-sm font-bold text-white">Copy Generated <span class="text-brand-400">✓</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="philosophy" class="py-24 bg-surfaceAlt border-y border-gray-200 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <span class="inline-block text-brand-600 font-bold text-sm tracking-widest uppercase mb-6 px-4 py-1.5 bg-brand-50 rounded-full">The Dropshipping Trap</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-darkText mb-10 leading-tight tracking-tight">
+                90% of stores fail because they sell commodities with <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">terrible logistics.</span>
+            </h2>
+            
+            <div class="prose prose-lg mx-auto text-mutedText font-body leading-relaxed">
+                <p class="mb-6">The traditional dropshipping model is dead. Finding a cheap gadget on AliExpress, waiting 20+ days for shipping, and dealing with massive customer chargebacks is a guaranteed way to kill your cash flow and ad accounts.</p>
+                <p class="mb-8">To win in 2026, you must build a <strong class="text-darkText font-bold">Brand</strong>. You need high-margin sourcing, dedicated private agents, AI-optimized storefronts, and 6-9 day shipping. You need an infrastructure that scales with you, from your first $1k day to managing bulk inventory in US 3PL warehouses.</p>
+                
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm text-left max-w-3xl mx-auto mt-12 grid md:grid-cols-2 gap-8">
+                    <div class="border-l-4 border-red-500 pl-5">
+                        <h4 class="text-lg font-bold text-darkText mb-2">The Old Way</h4>
+                        <ul class="space-y-2 text-sm text-mutedText">
+                            <li>❌ 15-30 Day AliExpress Shipping</li>
+                            <li>❌ Zero Inventory Control</li>
+                            <li>❌ Generic AI Copy</li>
+                            <li>❌ High Stripe Chargebacks</li>
+                        </ul>
+                    </div>
+                    <div class="border-l-4 border-brand-500 pl-5">
+                        <h4 class="text-lg font-bold text-darkText mb-2">The Commercive Way</h4>
+                        <ul class="space-y-2 text-sm text-mutedText">
+                            <li>✅ 6-9 Day Private Line Shipping</li>
+                            <li>✅ US & China 3PL Access</li>
+                            <li>✅ Storebuild.ai Integration</li>
+                            <li>✅ Dedicated Support & Discord</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="infrastructure" class="py-32 relative overflow-hidden bg-white">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-50/50 to-transparent pointer-events-none"></div>
+
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-darkText mb-6 tracking-tight">The Growth Infrastructure.</h2>
+                <p class="text-lg text-mutedText max-w-2xl mx-auto font-body">Everything required to build, launch, and fulfill orders globally is integrated directly into the Commercive ecosystem.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                
+                <div class="md:col-span-8 bg-surfaceAlt rounded-[2rem] p-10 border border-gray-200 hover:border-brand-200 bento-hover reveal relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] group-hover:bg-brand-500/20 transition-colors"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 border border-gray-100 text-2xl">🌍</div>
+                            <h3 class="text-3xl font-extrabold text-darkText mb-4">Global Dropshipping & China 3PL</h3>
+                            <p class="text-mutedText text-base leading-relaxed mb-8 max-w-xl">
+                                We source your products directly from manufacturers. Ship to 65+ countries worldwide with our private lines, achieving 98% on-time delivery. As you scale, transition seamlessly to our China or US 3PL for bulk inventory holding.
+                            </p>
+                        </div>
+                        <ul class="flex flex-wrap gap-3">
+                            <li class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-darkText shadow-sm">Fast 6-9 Day Delivery</li>
+                            <li class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-darkText shadow-sm">Custom Branding</li>
+                            <li class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-darkText shadow-sm">Lower COGS</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 bg-darkText rounded-[2rem] p-10 border border-gray-800 bento-hover reveal delay-100 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-[url('https://cdn.shopify.com/assets/images/logos/shopify-bag.png')] bg-no-repeat bg-center opacity-5 filter grayscale"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-6 border border-white/20 text-2xl">📱</div>
+                        <h3 class="text-2xl font-extrabold text-white mb-4">Shopify App Sync</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                            Connect your store to our official Shopify app for real-time order tracking, stock forecasting, and automated tracking number uploads to your customers.
+                        </p>
+                        <a href="https://apps.shopify.com/commercive" class="text-brand-400 text-sm font-bold hover:text-white transition-colors flex items-center gap-1">View on App Store <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></a>
+                    </div>
+                </div>
+
+                <div id="ai-store" class="md:col-span-4 bg-gradient-to-br from-brand-50 to-indigo-50 rounded-[2rem] p-10 border border-brand-100 bento-hover reveal relative">
+                    <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 border border-brand-100 text-2xl">🤖</div>
+                    <h3 class="text-2xl font-extrabold text-darkText mb-4">Commercive AI Copy</h3>
+                    <p class="text-mutedText text-sm leading-relaxed mb-6">
+                        Integrated directly with our Discord and Atlas. Input a product link, and our AI generates high-converting sales copy, bullet points, and product descriptions ready for your Shopify store.
+                    </p>
+                    <div class="w-full bg-white p-3 rounded-xl border border-gray-200 text-xs text-brand-700 font-mono text-center">/generate_copy url: [link]</div>
+                </div>
+
+                <div class="md:col-span-4 bg-surfaceAlt rounded-[2rem] p-10 border border-gray-200 bento-hover reveal delay-100">
+                    <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 border border-gray-100 text-2xl">🎵</div>
+                    <h3 class="text-2xl font-extrabold text-darkText mb-4">TikTok Shop Logistics</h3>
+                    <p class="text-mutedText text-sm leading-relaxed">
+                        TikTok Shop requires strict shipping metrics. We utilize our US 3PL network to ensure your orders hit the required 3-day delivery window to keep your TikTok account healthy and scaling.
+                    </p>
+                </div>
+
+                <div class="md:col-span-4 bg-surfaceAlt rounded-[2rem] p-10 border border-gray-200 bento-hover reveal delay-200">
+                    <div class="w-14 h-14 rounded-2xl bg-[#5865F2]/10 shadow-sm flex items-center justify-center mb-6 border border-[#5865F2]/20">
+                        <svg class="w-6 h-6 text-[#5865F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-darkText mb-4">Support & Comms</h3>
+                    <p class="text-mutedText text-sm leading-relaxed">
+                        Open product sourcing tickets directly inside Discord. Get fast replies from our agents, daily winning product drops, and network with 1000+ active store owners.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="case-studies" class="py-32 bg-white border-y border-gray-100 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-brand-50 to-transparent opacity-50 pointer-events-none"></div>
+
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+                <div class="max-w-2xl">
+                    <span class="inline-block text-brand-600 font-bold text-sm tracking-widest uppercase mb-4">Architects of Scale</span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-darkText mb-4 tracking-tight">Verified Case Studies.</h2>
+                    <p class="text-lg text-mutedText font-body">Review real-world brands that utilize Commercive's private dropshipping network and 3PL infrastructure to reduce COGS and conquer complex fulfillment.</p>
+                </div>
+                <div class="mt-8 md:mt-0">
+                    <a href="https://www.trustpilot.com/review/commercive.co" target="_blank" class="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-xl border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors">
+                        <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" alt="Trustpilot" class="h-6">
+                        <div class="flex items-center text-green-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <span class="font-bold text-darkText">4.8 Rating</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10">
+                
+                <div class="bg-surfaceAlt rounded-[2rem] p-10 border border-gray-200 shadow-soft hover:shadow-glass-hover transition-all duration-300 reveal group">
+                    <div class="flex flex-wrap items-center gap-3 mb-8">
+                        <span class="px-4 py-1.5 bg-blue-100 text-blue-700 text-xs font-bold rounded-lg border border-blue-200 uppercase tracking-wide">Home Tech Niche</span>
+                        <span class="px-4 py-1.5 bg-brand-100 text-brand-700 text-xs font-bold rounded-lg border border-brand-200 uppercase tracking-wide">Dropshipping to US 3PL</span>
+                    </div>
+                    
+                    <h3 class="text-3xl font-extrabold text-darkText mb-2">Lumina Acoustics</h3>
+                    <p class="text-sm text-mutedText mb-8 font-medium">Market: USA | Volume: <span class="text-green-600 font-bold">1,200+ Orders/mo</span></p>
+                    
+                    <div class="space-y-6 text-sm text-darkText font-body leading-relaxed border-l-2 border-brand-500 pl-6 mb-10">
+                        <p><strong class="block text-brand-700 mb-1 text-base">The Challenge:</strong> Lumina was scaling a high-ticket audio product ($150) using AliExpress. Shipping was taking 20+ days, leading to massive PayPal chargebacks, customer complaints, and a restricted ad account.</p>
+                        <p><strong class="block text-brand-700 mb-1 text-base">The Commercive Solution:</strong> We assigned a dedicated sourcing agent via Discord. We sourced the exact product directly from the factory (saving $12 per unit in COGS), applied custom branded packaging, and utilized our fast private line (7-day delivery). As volume grew, we moved their inventory to our US 3PL.</p>
+                        <p><strong class="block text-green-600 mb-1 text-base">The Result:</strong> Chargebacks dropped to near 0%. The store unlocked TikTok Shop capabilities due to the fast US 3PL shipping, allowing them to scale past $100k/mo profitably.</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 border-t border-gray-200 pt-6 text-center">
+                        <div>
+                            <div class="text-2xl font-extrabold text-darkText">-$12</div>
+                            <div class="text-xs text-mutedText font-bold mt-1">COGS Reduction</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-darkText">7 Days</div>
+                            <div class="text-xs text-mutedText font-bold mt-1">Avg Delivery Time</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-brand-600">US 3PL</div>
+                            <div class="text-xs text-mutedText font-bold mt-1">Current Setup</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-surfaceAlt rounded-[2rem] p-10 border border-gray-200 shadow-soft hover:shadow-glass-hover transition-all duration-300 reveal delay-100 group">
+                    <div class="flex flex-wrap items-center gap-3 mb-8">
+                        <span class="px-4 py-1.5 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg border border-purple-200 uppercase tracking-wide">Health & Wellness</span>
+                        <span class="px-4 py-1.5 bg-brand-100 text-brand-700 text-xs font-bold rounded-lg border border-brand-200 uppercase tracking-wide">AI Store Builder</span>
+                    </div>
+                    
+                    <h3 class="text-3xl font-extrabold text-darkText mb-2">Posture Core</h3>
+                    <p class="text-sm text-mutedText mb-8 font-medium">Market: EU & UK | Launch Time: <span class="text-green-600 font-bold">48 Hours</span></p>
+                    
+                    <div class="space-y-6 text-sm text-darkText font-body leading-relaxed border-l-2 border-brand-500 pl-6 mb-10">
+                        <p><strong class="block text-brand-700 mb-1 text-base">The Challenge:</strong> A beginner dropshipper needed to launch a posture corrector brand rapidly to catch a viral TikTok trend, but struggled with creating high-converting Shopify product pages and writing compelling copy.</p>
+                        <p><strong class="block text-brand-700 mb-1 text-base">The Commercive Solution:</strong> They utilized the Commercive Discord AI bot. By simply pasting an AliExpress link, the AI generated optimized titles, direct-response bullet points, and product descriptions within minutes. They connected the store to the Commercive App to automate order syncing.</p>
+                        <p><strong class="block text-green-600 mb-1 text-base">The Result:</strong> The store went live in 48 hours with a highly professional look. Without wasting money on copywriters, they achieved a 4.2% conversion rate on cold TikTok traffic on day one.</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 border-t border-gray-200 pt-6 text-center">
+                        <div>
+                            <div class="text-2xl font-extrabold text-darkText">4.2%</div>
+                            <div class="text-xs text-mutedText font-bold mt-1">Conversion Rate</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-darkText">48 Hrs</div>
+                            <div class="text-xs text-mutedText font-bold mt-1">To Launch</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-brand-600">Automated</div>
+                            <div class="text-xs text-mutedText font-bold mt-1">Fulfillment</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-32 relative overflow-hidden bg-brand-950">
+        <div class="absolute inset-0 z-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-600 rounded-full blur-[200px] opacity-30 pointer-events-none"></div>
+
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-24 reveal">
+                <span class="inline-block text-brand-300 font-bold text-sm tracking-widest uppercase mb-4">Ecosystem Access</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 tracking-tight">Solutions Built For Scale.</h2>
+                <p class="text-lg text-brand-100/80 max-w-2xl mx-auto font-body">Choose your entry point. Access the premier community and app, or have our elite development team build your custom asset from scratch.</p>
+            </div>
+
+            <div class="grid xl:grid-cols-2 gap-10 max-w-6xl mx-auto">
+                
+                <div class="bg-white/10 backdrop-blur-2xl rounded-[2.5rem] p-10 lg:p-14 border border-white/20 shadow-2xl hover:-translate-y-2 transition-transform duration-500 reveal flex flex-col relative group">
+                    <div class="mb-10">
+                        <div class="inline-block px-4 py-2 bg-brand-500 text-white text-xs font-bold rounded-full mb-6 border border-brand-400 shadow-sm">Network & Fulfillment Access</div>
+                        <h3 class="text-4xl font-extrabold text-white mb-4">Commercive Membership</h3>
+                        <p class="text-brand-100/80 text-base leading-relaxed min-h-[3rem]">Full access to our private Discord, Shopify App sync, dedicated sourcing agents, and AI tools.</p>
+                    </div>
+                    
+                    <div class="flex items-baseline gap-2 mb-10 border-b border-white/10 pb-10">
+                        <span class="text-6xl font-extrabold text-white tracking-tight">$29.99</span>
+                        <span class="text-brand-200 font-medium">/ month</span>
+                    </div>
+                    
+                    <ul class="space-y-5 text-base text-white font-medium mb-12 flex-grow">
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center shrink-0 border border-brand-500/50">
+                                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Shopify App & Order Tracking Dashboard
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center shrink-0 border border-brand-500/50">
+                                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Dedicated 1-on-1 Sourcing Agent
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center shrink-0 border border-brand-500/50">
+                                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Private Discord Mastermind Access
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center shrink-0 border border-brand-500/50">
+                                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Storebuild.ai Integration
+                        </li>
+                        <li class="flex items-center gap-4 pt-6 border-t border-white/10 mt-6">
+                            <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 border border-green-500/50">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-green-400 font-bold">30.00% Affiliate Payouts</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://whop.com/commercive/commercive-membership-3?a=digitalartlab" class="block w-full py-5 text-center text-darkText bg-white hover:bg-gray-100 font-bold rounded-xl transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)] text-lg mt-auto">
+                        Join Platform
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] p-10 lg:p-14 border border-gray-200 shadow-2xl hover:-translate-y-2 transition-transform duration-500 reveal delay-100 flex flex-col relative overflow-hidden">
+                    
+                    <div class="mb-10 relative z-10">
+                        <div class="inline-block px-4 py-2 bg-gray-100 text-darkText border border-gray-200 text-xs font-bold rounded-full mb-6">Done-For-You Service</div>
+                        <h3 class="text-4xl font-extrabold text-darkText mb-4">Custom Branded Store</h3>
+                        <p class="text-mutedText text-base leading-relaxed min-h-[3rem]">Skip the learning curve. Our elite development team builds a premium, high-converting brand asset ready for traffic.</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 mb-10 border-b border-gray-100 pb-10 relative z-10">
+                        <span class="text-4xl font-extrabold text-darkText tracking-tight">Custom Quote</span>
+                        <span class="px-3 py-1.5 bg-gray-100 rounded text-xs text-mutedText font-bold">One-Time Project</span>
+                    </div>
+                    
+                    <ul class="space-y-5 text-base text-darkText font-medium mb-12 flex-grow relative z-10">
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center shrink-0 border border-brand-100">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Premium Custom-Coded Shopify Theme
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center shrink-0 border border-brand-100">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Deep Niche & Product Research Included
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center shrink-0 border border-brand-100">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Professional Direct-Response Copywriting
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center shrink-0 border border-brand-100">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Logo, Branding, & Graphic Design
+                        </li>
+                        <li class="flex items-center gap-4 pt-6 border-t border-gray-100 mt-6">
+                            <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-brand-600 font-bold">Earn 30.00% on referrals for this service</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://whop.com/commercive/1a0b4a13-f47a-4228-945e-23b2a9fc1737?a=digitalartlab" class="block w-full py-5 text-center text-white bg-darkText hover:bg-brand-600 font-bold rounded-xl transition-colors shadow-float text-lg mt-auto relative z-10">
+                        Inquire / Book Build
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="affiliate" class="py-32 bg-white relative overflow-hidden border-b border-gray-200">
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-20 items-center">
+                
+                <div class="lg:col-span-6 reveal">
+                    <span class="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 text-xs font-bold uppercase tracking-widest rounded-full border border-green-200 mb-8">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Partnership Ledger
+                    </span>
+                    
+                    <h2 class="text-5xl md:text-6xl font-extrabold text-darkText leading-tight mb-8 tracking-tight">
+                        Scale your capital. <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-400">Earn 30% recurring.</span>
+                    </h2>
+                    
+                    <p class="text-lg text-mutedText font-body leading-relaxed mb-10">
+                        We don't spend money on Facebook Ads. We pay our own community instead. Refer friends, followers, or your agency clients to the Commercive ecosystem and generate a massive new income stream.
+                    </p>
+                    
+                    <div class="bg-surfaceAlt border border-gray-200 rounded-2xl p-8 mb-10">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-4">
+                            <span class="font-bold text-darkText">Commercive Membership</span>
+                            <span class="font-medium text-mutedText">$29.99 /mo</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-brand-600 text-lg">Your Recurring Cut (30%)</span>
+                            <span class="font-extrabold text-green-500 text-2xl">~$9.00 <span class="text-sm text-gray-400 font-medium">/mo per user</span></span>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-6 mb-12">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600 font-extrabold shrink-0 border border-brand-100">1</div>
+                            <div>
+                                <h4 class="text-darkText font-bold text-lg mb-1">Fund Your Own Brand</h4>
+                                <p class="text-mutedText text-sm">Just 4 active referrals covers your own $29.99 membership. Everything else is pure profit to scale your own ad spend.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600 font-extrabold shrink-0 border border-brand-100">2</div>
+                            <div>
+                                <h4 class="text-darkText font-bold text-lg mb-1">Automated by Whop</h4>
+                                <p class="text-mutedText text-sm">No chasing us for invoices. All subscription splits are handled programmatically by Whop and deposited directly to your bank account.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://whop.com/commercive?a=digitalartlab" class="inline-flex items-center justify-center w-full sm:w-auto px-10 py-5 bg-darkText hover:bg-brand-600 text-white font-bold rounded-xl transition-all duration-300 shadow-float text-lg">
+                        Generate Affiliate Link via Whop
+                    </a>
+                </div>
+
+                <div class="lg:col-span-6 reveal delay-200 relative hidden lg:block">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-green-100 to-brand-50 rounded-[3rem] transform rotate-3 scale-105 border border-white"></div>
+                    
+                    <div class="relative bg-white/90 backdrop-blur-2xl border border-white rounded-[2.5rem] p-10 shadow-glass z-10 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                        
+                        <div class="text-center mb-8">
+                            <p class="text-sm font-bold text-mutedText uppercase tracking-widest mb-2">Whop Partner Dashboard</p>
+                            <h3 class="text-5xl font-extrabold text-darkText tracking-tight">$1,245<span class="text-gray-400 text-3xl">.50</span></h3>
+                            <p class="text-sm text-green-500 font-bold mt-2">Available for Payout</p>
+                        </div>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="bg-surfaceAlt rounded-2xl p-5 flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-darkText font-bold text-sm">Commercive Membership</p>
+                                    <p class="text-xs text-mutedText mt-1">12 Active Referrals</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-green-500 font-extrabold text-lg">+$107.96 <span class="text-xs text-gray-400 font-medium">/mo</span></p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-surfaceAlt rounded-2xl p-5 flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-darkText font-bold text-sm">Custom Branded Store</p>
+                                    <p class="text-xs text-mutedText mt-1">1 Completed Build</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-green-500 font-extrabold text-lg">+$450.00 <span class="text-xs text-gray-400 font-medium">One-time</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-50 rounded-2xl p-5 border border-brand-100 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                    <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-brand-600 font-bold uppercase tracking-wider">Link Clicks (30d)</p>
+                                    <p class="text-xl font-extrabold text-darkText">1,420</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-brand-600 font-bold uppercase tracking-wider">Conversion</p>
+                                <p class="text-xl font-extrabold text-darkText">3.4%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-surfaceAlt relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal">
+                <span class="inline-block text-brand-600 font-bold text-sm tracking-widest uppercase mb-4">Operations Manual</span>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-darkText mb-6 tracking-tight">Frequently Asked Questions</h2>
+                <p class="text-mutedText text-lg">Everything you need to know about fulfillment, the Shopify app, and the membership before joining the ecosystem.</p>
+            </div>
+
+            <div class="space-y-4 reveal delay-100">
+                
+                <div class="faq-item bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-bold text-darkText text-lg md:text-xl pr-8 group-hover:text-brand-600 transition-colors">How exactly does the Fulfillment and Sourcing work?</span>
+                        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-brand-600 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer bg-gray-50 border-t border-gray-100">
+                        <p class="text-mutedText text-base leading-relaxed p-8">
+                            Once you join, you open a sourcing ticket in our Discord. You provide the AliExpress link or product details. Our dedicated agents in China source the product directly from the factory (usually securing a much lower COGS). We then fulfill your orders using our private shipping lines to 65+ countries, typically arriving in 6-9 days to the US/EU/UK. You sync everything seamlessly via the Commercive Shopify App.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-bold text-darkText text-lg md:text-xl pr-8 group-hover:text-brand-600 transition-colors">Can I use Commercive for TikTok Shop and Amazon?</span>
+                        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-brand-600 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer bg-gray-50 border-t border-gray-100">
+                        <p class="text-mutedText text-base leading-relaxed p-8">
+                            Yes. While dropshipping from China is great for testing on Shopify, TikTok Shop requires strict 3-day shipping limits. We offer complete US 3PL (Third Party Logistics) warehousing. We can bulk manufacture your winning product in China, ship it to our US warehouse via sea/air freight, and fulfill your TikTok Shop or Amazon FBA prep orders directly from the USA to meet their strict SLA requirements.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-bold text-darkText text-lg md:text-xl pr-8 group-hover:text-brand-600 transition-colors">What is included in the Custom Branded Store?</span>
+                        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-brand-600 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer bg-gray-50 border-t border-gray-100">
+                        <p class="text-mutedText text-base leading-relaxed p-8">
+                            It is a complete Done-For-You service. Our development team handles deep niche research to find a winning product. We then design a premium custom-coded Shopify theme, write professional direct-response copy (leveraging Storebuild.ai and our copywriters), create your logo and branding, and set up the backend logistics connections with the Commercive App. You receive a fully operational business ready to accept traffic.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-bold text-darkText text-lg md:text-xl pr-8 group-hover:text-brand-600 transition-colors">I'm a beginner. Is the $29.99 membership for me?</span>
+                        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-brand-600 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer bg-gray-50 border-t border-gray-100">
+                        <p class="text-mutedText text-base leading-relaxed p-8">
+                            Absolutely. The biggest mistake beginners make is trying to figure out suppliers, ad creatives, and store coding alone. The membership grants you access to our AI copy tools, daily winning product drops, and most importantly, our Discord community of veteran operators. You can ask questions 24/7 and join weekly live store teardown calls to avoid costly beginner mistakes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <button class="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-bold text-darkText text-lg md:text-xl pr-8 group-hover:text-brand-600 transition-colors">Am I locked into a contract? Can I cancel?</span>
+                        <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-brand-600 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                    </button>
+                    <div class="faq-answer bg-gray-50 border-t border-gray-100">
+                        <p class="text-mutedText text-base leading-relaxed p-8">
+                            No contracts. The Commercive Membership ($29.99) is billed month-to-month. You can cancel at any time with a single click inside your secure Whop user dashboard. There are no hidden cancellation fees, and you won't have to talk to a support agent to process it.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-gray-200 pt-24 pb-12 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-extrabold text-[15vw] text-gray-50 whitespace-nowrap pointer-events-none z-0">COMMERCIVE</div>
+
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20 border-b border-gray-200 pb-20">
+                
+                <div class="lg:col-span-5 pr-0 lg:pr-12">
+                    <a href="#" class="flex items-center gap-3 mb-8">
+                        <div class="w-12 h-12 bg-gradient-to-br from-brand-700 to-brand-500 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        </div>
+                        <span class="font-extrabold text-3xl tracking-tight text-darkText">Commercive</span>
+                    </a>
+                    <p class="text-mutedText text-base leading-relaxed mb-8 max-w-md">
+                        The ultimate infrastructure for the top 1% of e-commerce operators. Stop dropshipping commodities with 30-day shipping. Start building highly profitable, custom-branded stores with global logistics support and US/China 3PL access.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://whop.com/commercive?a=digitalartlab" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surfaceAlt border border-gray-200 font-bold text-sm text-darkText hover:bg-gray-100 hover:border-gray-300 transition-colors">
+                            <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            View Whop Profile
+                        </a>
+                        <a href="https://apps.shopify.com/commercive" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surfaceAlt border border-gray-200 font-bold text-sm text-darkText hover:bg-gray-100 hover:border-gray-300 transition-colors">
+                            <img src="https://cdn.shopify.com/assets/images/logos/shopify-bag.png" alt="Shopify" class="w-4 h-4 object-contain filter grayscale">
+                            Shopify App
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 lg:col-start-7">
+                    <h4 class="font-extrabold text-darkText mb-6 uppercase tracking-wider text-xs text-brand-600">Platform</h4>
+                    <ul class="space-y-4 text-sm font-semibold text-mutedText">
+                        <li><a href="#philosophy" class="hover:text-brand-600 transition-colors block">The Manifesto</a></li>
+                        <li><a href="#infrastructure" class="hover:text-brand-600 transition-colors block">Infrastructure</a></li>
+                        <li><a href="#case-studies" class="hover:text-brand-600 transition-colors block">Case Studies</a></li>
+                        <li><a href="#products" class="hover:text-brand-600 transition-colors block">Pricing & Access</a></li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-3">
+                    <h4 class="font-extrabold text-darkText mb-6 uppercase tracking-wider text-xs text-brand-600">Solutions</h4>
+                    <ul class="space-y-4 text-sm font-semibold text-mutedText">
+                        <li><a href="https://whop.com/commercive/commercive-membership-3?a=digitalartlab" class="hover:text-brand-600 transition-colors flex items-center justify-between group">Membership <span class="px-2 py-0.5 bg-brand-50 text-brand-600 text-[10px] rounded-full group-hover:bg-brand-600 group-hover:text-white transition-colors">$29.99</span></a></li>
+                        <li><a href="https://whop.com/commercive/1a0b4a13-f47a-4228-945e-23b2a9fc1737?a=digitalartlab" class="hover:text-brand-600 transition-colors flex items-center justify-between group">Custom Branded Store <span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-[10px] rounded-full group-hover:bg-gray-200 transition-colors">DFY</span></a></li>
+                        <li><a href="#affiliate" class="text-green-600 hover:text-green-700 transition-colors font-extrabold flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Earn 30% Rev-Share</a></li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <h4 class="font-extrabold text-darkText mb-6 uppercase tracking-wider text-xs text-brand-600">Legal</h4>
+                    <ul class="space-y-4 text-sm font-semibold text-mutedText">
+                        <li><a href="#" class="hover:text-brand-600 transition-colors block">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors block">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors block">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors block">Support Tickets</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-sm text-mutedText font-semibold text-center md:text-left">
+                    &copy; 2026 Commercive Logistics & Fulfillment. All rights reserved.
+                </p>
+                <div class="flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-surfaceAlt border border-gray-200 flex items-center justify-center text-mutedText hover:text-brand-600 hover:border-brand-300 transition-colors cursor-pointer">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-surfaceAlt border border-gray-200 flex items-center justify-center text-mutedText hover:text-brand-600 hover:border-brand-300 transition-colors cursor-pointer">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z"/></svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-xs text-gray-400 text-center md:text-left max-w-5xl leading-relaxed">
+                <strong>Important Disclaimer:</strong> Commercive provides educational resources, networking, AI software tools, and development services for e-commerce operators. We do not guarantee financial success, specific revenue results, or profit margins. Building a brand and operating an e-commerce business involves significant risk. The case studies and examples provided are derived from real user experiences but are not a guarantee of future performance for your specific business.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Hamburger Menu Logic ---
+        const btn = document.getElementById('ham-btn');
+        const menu = document.getElementById('mobile-menu');
+        const links = document.querySelectorAll('.mobile-link');
+        const navbarContainer = document.getElementById('nav-container');
+        const navbar = document.getElementById('navbar');
+
+        function toggleMenu() {
+            btn.classList.toggle('ham-open');
+            if(menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                document.body.style.overflow = '';
+                if (window.scrollY > 50) {
+                    navbar.classList.add('py-2');
+                    navbar.classList.remove('py-4');
+                }
+            } else {
+                menu.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+        }
+
+        btn.addEventListener('click', toggleMenu);
+        links.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // --- Navbar Scroll Effect (Glassmorphism Expansion) ---
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+                navbarContainer.classList.add('bg-white/85', 'shadow-glass');
+                navbarContainer.classList.remove('bg-white/50', 'shadow-soft');
+            } else {
+                if(!menu.classList.contains('open')) {
+                    navbar.classList.remove('py-2');
+                    navbar.classList.add('py-4');
+                }
+                navbarContainer.classList.remove('bg-white/85', 'shadow-glass');
+                navbarContainer.classList.add('bg-white/50', 'shadow-soft');
+            }
+        });
+
+        // --- Smooth Scroll Reveal Intersections ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -80px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .animate-slide-in').forEach((elem) => {
+            observer.observe(elem);
+        });
+
+        // --- Modern Accordion Logic ---
+        function toggleFaq(button) {
+            const item = button.parentElement;
+            
+            // Close other open accordions
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                if(otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                }
+            });
+
+            // Toggle the clicked one
+            item.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
